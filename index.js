@@ -7,19 +7,30 @@ let $time = document.getElementById('time');
 let $timeHeader = document.getElementById('time-header');
 let $resultHeader = document.getElementById('result-header');
 let $result = document.getElementById('result');
+let $gameTime = document.getElementById('game-time');
 
 let isGameStarted = false;
 let score;
 
 $start.addEventListener('click', startGame);
 $game.addEventListener('click', handleBoxClick);
+$gameTime.addEventListener('input', setGameTime);
+
+function hide($el) {
+	$el.classList.add('hide');
+}
+
+function show($el) {
+	$el.classList.remove('hide');
+}
 
 function startGame() {
 	score = 0;
 	isGameStarted = true;
-	setGameStart();
+	$gameTime.setAttribute('disabled', 'true');
+	setGameTime();
 	
-	$start.classList.add('hide');
+	hide($start);
 	$game.style.backgroundColor = '#fff';
 	renderBox();
 	
@@ -37,11 +48,12 @@ function startGame() {
 
 function endGame() {
 	isGameStarted = false;
+	$gameTime.removeAttribute('disabled');
 	setGameScore();
 	
-	$resultHeader.classList.remove('hide');
-	$timeHeader.classList.add('hide');
-	$start.classList.remove('hide');
+	show($resultHeader);
+	show($start);
+	hide($timeHeader);
 	$game.style.backgroundColor = '#ccc';
 	$game.innerHTML = '';
 }
@@ -50,11 +62,11 @@ function setGameScore() {
 	$result.textContent = score.toString();
 }
 
-function setGameStart() {
-	let time = 5;
+function setGameTime() {
+	let time = +$gameTime.value;
 	$time.textContent = time.toFixed(1);
-	$resultHeader.classList.add('hide');
-	$timeHeader.classList.remove('hide');
+	hide($resultHeader);
+	show($timeHeader);
 }
 
 function renderBox() {
