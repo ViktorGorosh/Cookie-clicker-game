@@ -1,18 +1,24 @@
 "use strict";
 
-// Style guide: элементы, начинающиеся с # - типа Node
+// Style guide: элементы, начинающиеся с $ - типа Node
 let $start = document.getElementById('start');
 let $game = document.getElementById('game');
 let $time = document.getElementById('time');
+let $timeHeader = document.getElementById('time-header');
+let $resultHeader = document.getElementById('result-header');
+let $result = document.getElementById('result');
 
 let isGameStarted = false;
-let score = 0;
+let score;
 
 $start.addEventListener('click', startGame);
 $game.addEventListener('click', handleBoxClick);
 
 function startGame() {
+	score = 0;
 	isGameStarted = true;
+	setGameStart();
+	
 	$start.classList.add('hide');
 	$game.style.backgroundColor = '#fff';
 	renderBox();
@@ -31,6 +37,24 @@ function startGame() {
 
 function endGame() {
 	isGameStarted = false;
+	setGameScore();
+	
+	$resultHeader.classList.remove('hide');
+	$timeHeader.classList.add('hide');
+	$start.classList.remove('hide');
+	$game.style.backgroundColor = '#ccc';
+	$game.innerHTML = '';
+}
+
+function setGameScore() {
+	$result.textContent = score.toString();
+}
+
+function setGameStart() {
+	let time = 5;
+	$time.textContent = time.toFixed(1);
+	$resultHeader.classList.add('hide');
+	$timeHeader.classList.remove('hide');
 }
 
 function renderBox() {
