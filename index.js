@@ -52,10 +52,12 @@ function endGame() {
 	setGameScore();
 	
 	show($resultHeader);
-	show($start);
 	hide($timeHeader);
 	$game.style.backgroundColor = '#ccc';
 	$game.innerHTML = '';
+	setTimeout(() => {
+		show($start)
+	}, 1000);
 }
 
 function setGameScore() {
@@ -82,8 +84,9 @@ function renderBox() {
 	box.style.position = 'absolute';
 	box.style.top = getRandom(0, maxTop) + 'px';
 	box.style.left = getRandom(0, maxLeft) + 'px';
-	box.style.backgroundColor = '#000';
 	box.setAttribute('data-box', 'true');
+	
+	box.style.backgroundColor = getRandomColor();
 	
 	$game.append(box);
 }
@@ -94,6 +97,14 @@ function handleBoxClick(event) {
 	renderBox();
 }
 
+/**
+ * Returns randomly generated number from min (including) to max (including)
+* @returns {number} Randomly generated number
+* */
 function getRandom(min, max) {
-	return Math.floor( min + Math.random() * (max - min) );
+	return Math.floor( min + Math.random() * (max + 1 - min) );
+}
+
+function getRandomColor() {
+	return '#' + getRandom(0, 16777215).toString(16).padStart(6, '0');
 }
